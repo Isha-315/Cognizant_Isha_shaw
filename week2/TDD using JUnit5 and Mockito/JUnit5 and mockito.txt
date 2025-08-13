@@ -1,0 +1,235 @@
+Exercise 1: Setting Up JUnit
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.13.2</version>
+    <scope>test</scope>
+</dependency>
+
+<dependency>
+    <groupId>org.hamcrest</groupId>
+    <artifactId>hamcrest-core</artifactId>
+    <version>1.3</version>
+    <scope>test</scope>
+</dependency>
+mvn clean install
+package com.example;
+
+public class Calculator {
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public boolean isPositive(int num) {
+        return num > 0;
+    }
+}
+package com.example;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+public class CalculatorTest {
+
+    private Calculator calc;
+
+    @Before
+    public void setUp() {
+        // Arrange
+        calc = new Calculator();
+    }
+
+    @After
+    public void tearDown() {
+        calc = null;
+    }
+
+    @Test
+    public void testAdd() {
+        // Act
+        int result = calc.add(2, 3);
+        // Assert
+        assertEquals(5, result);
+    }
+
+    @Test
+    public void testIsPositive() {
+        assertTrue(calc.isPositive(10));
+        assertFalse(calc.isPositive(-5));
+    }
+}
+
+Exercise 3 — Assertions in JUnit
+package com.example;
+
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+public class AssertionsTest {
+
+    @Test
+    public void testAssertions() {
+        // Assert equals
+        assertEquals(5, 2 + 3);
+
+        // Assert true
+        assertTrue(5 > 3);
+
+        // Assert false
+        assertFalse(5 < 3);
+
+        // Assert null
+        assertNull(null);
+
+        // Assert not null
+        assertNotNull(new Object());
+    }
+}
+
+Exercise 4 — Arrange-Act-Assert (AAA) Pattern with Setup/Teardown
+package com.example;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+public class CalculatorAAATest {
+
+    private Calculator calc;
+
+    @Before
+    public void setUp() {
+        // Arrange — runs before each test
+        calc = new Calculator();
+    }
+
+    @After
+    public void tearDown() {
+        // Cleanup — runs after each test
+        calc = null;
+    }
+
+    @Test
+    public void testAdd_AAA() {
+        // Act
+        int result = calc.add(7, 3);
+        // Assert
+        assertEquals(10, result);
+    }
+
+    @Test
+    public void testIsPositive_AAA() {
+        assertTrue(calc.isPositive(1));
+        assertFalse(calc.isPositive(-1));
+    }
+}
+
+Mockito Hands-On Exercises
+
+<dependencies>
+    <!-- JUnit 5 -->
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter</artifactId>
+        <version>5.10.2</version>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- Mockito Core -->
+    <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>5.11.0</version>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- Mockito JUnit 5 integration -->
+    <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-junit-jupiter</artifactId>
+        <version>5.11.0</version>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
+
+Exercise 1 — Mocking and Stubbing
+
+package com.example;
+
+import org.junit.jupiter.api.Test;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class MyServiceMockingTest {
+
+    @Test
+    void testExternalApiStub() {
+        // Create mock object
+        ExternalApi mockApi = mock(ExternalApi.class);
+
+        // Stub getData() to return a fixed value
+        when(mockApi.getData()).thenReturn("Mock Data");
+
+        // Inject mock into service
+        MyService service = new MyService(mockApi);
+
+        // Call method under test
+        String result = service.fetchData();
+
+        // Assert the expected result
+        assertEquals("Mock Data", result);
+    }
+}
+
+Exercise 2 — Verifying Interactions
+package com.example;
+
+import org.junit.jupiter.api.Test;
+import static org.mockito.Mockito.*;
+
+public class MyServiceVerifyTest {
+
+    @Test
+    void testVerifyInteraction() {
+        ExternalApi mockApi = mock(ExternalApi.class);
+        MyService service = new MyService(mockApi);
+
+        service.fetchData();
+
+        // Verify that getData() was called exactly once
+        verify(mockApi).getData();
+    }
+}
+
+Logging using SLF4J
+
+Exercise 1: Logging Error Messages and Warning Levels 
+
+1. Add SLF4J and Logback dependencies to your `pom.xml` file:
+<dependency>
+ <groupId>org.slf4j</groupId>
+ <artifactId>slf4j-api</artifactId>
+ <version>1.7.30</version>
+</dependency>
+<dependency>
+ <groupId>ch.qos.logback</groupId>
+ <artifactId>logback-classic</artifactId>
+ <version>1.2.3</version>
+</dependency>
+2. Create a Java class that uses SLF4J for logging:
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+public class LoggingExample {
+ private static final Logger logger = LoggerFactory.getLogger(LoggingExample.class);
+ public static void main(String[] args) {
+ logger.error("This is an error message");
+ logger.warn("This is a warning message");
+ }
+
+
+
+
+

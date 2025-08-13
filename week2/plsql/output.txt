@@ -1,0 +1,14 @@
+Scenario 2 – Promote VIP Customers
+Customer John Doe promoted to VIP
+Customer Jane Smith promoted to VIP
+Scenario 3 – Loan Due RemindersReminder:
+Loan 1 for customer John Doe is due on 15-AUG-2025
+Reminder: Loan 3 for customer Alice Smith is due on 20-AUG-2025
+Exercise 3: Stored Procedures
+Scenario 1 – ProcessMonthlyInterest
+Monthly interest applied to account 1
+Monthly interest applied to account 3
+Scenario 2 – UpdateEmployeeBonus
+2 employee(s) received a 10% bonus in IT department
+Scenario 3 – TransferFunds
+Transfer completed successfully.
