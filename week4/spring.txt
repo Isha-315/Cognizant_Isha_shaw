@@ -1,0 +1,344 @@
+Create a Spring Web Project using Maven
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.example</groupId>
+    <artifactId>spring-web-demo</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>3.2.3</version>
+        </dependency>
+    </dependencies>
+</project>
+
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+
+package com.example.demo;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloController {
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello, Spring Web!";
+    }
+}
+
+Spring Core – Load Country from Spring Configuration XML
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="country" class="com.example.demo.Country">
+        <property name="name" value="India"/>
+        <property name="capital" value="New Delhi"/>
+    </bean>
+
+</beans>
+
+package com.example.demo;
+
+public class Country {
+    private String name;
+    private String capital;
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getCapital() { return capital; }
+    public void setCapital(String capital) { this.capital = capital; }
+
+    @Override
+    public String toString() {
+        return "Country{name='" + name + "', capital='" + capital + "'}";
+    }
+}
+package com.example.demo;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class MainApp {
+    public static void main(String[] args) {
+        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        Country country = (Country) context.getBean("country");
+        System.out.println(country);
+    }
+}
+
+Hello World RESTful Web Service
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.example</groupId>
+    <artifactId>hello-rest</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>3.2.3</version>
+        </dependency>
+    </dependencies>
+</project>
+
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+
+package com.example.demo;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloController {
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello World!";
+    }
+}
+
+REST - Country Web Service
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.example</groupId>
+    <artifactId>country-service</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>3.2.3</version>
+        </dependency>
+    </dependencies>
+</project>
+
+package com.example.demo;
+
+public class Country {
+    private String name;
+    private String capital;
+
+    public Country() {}
+    public Country(String name, String capital) {
+        this.name = name;
+        this.capital = capital;
+    }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getCapital() { return capital; }
+    public void setCapital(String capital) { this.capital = capital; }
+}
+package com.example.demo;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
+
+@RestController
+public class CountryController {
+    private List<Country> countries = List.of(
+        new Country("India", "New Delhi"),
+        new Country("USA", "Washington D.C."),
+        new Country("Japan", "Tokyo")
+    );
+
+    @GetMapping("/countries")
+    public List<Country> getAllCountries() {
+        return countries;
+    }
+
+    @GetMapping("/countries/{name}")
+    public Country getCountry(@PathVariable String name) {
+        return countries.stream()
+                .filter(c -> c.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null);
+    }
+}
+
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+
+REST - Get country based on country code
+package com.example.demo;
+
+public class Country {
+    private String code;
+    private String name;
+    private String capital;
+
+    public Country() {}
+    public Country(String code, String name, String capital) {
+        this.code = code;
+        this.name = name;
+        this.capital = capital;
+    }
+
+    public String getCode() { return code; }
+    public void setCode(String code) { this.code = code; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getCapital() { return capital; }
+    public void setCapital(String capital) { this.capital = capital; }
+}
+package com.example.demo;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
+
+@RestController
+public class CountryController {
+    private List<Country> countries = List.of(
+        new Country("IN", "India", "New Delhi"),
+        new Country("US", "USA", "Washington D.C."),
+        new Country("JP", "Japan", "Tokyo")
+    );
+
+    @GetMapping("/countries/{code}")
+    public Country getCountryByCode(@PathVariable String code) {
+        return countries.stream()
+                .filter(c -> c.getCode().equalsIgnoreCase(code))
+                .findFirst()
+                .orElse(null);
+    }
+}
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+
+Create authentication service that returns JWT
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-api</artifactId>
+        <version>0.11.5</version>
+    </dependency>
+    <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-impl</artifactId>
+        <version>0.11.5</version>
+        <scope>runtime</scope>
+    </dependency>
+    <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-jackson</artifactId>
+        <version>0.11.5</version>
+        <scope>runtime</scope>
+    </dependency>
+</dependencies>
+
+package com.example.demo;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Date;
+
+public class JwtUtil {
+    private static final String SECRET_KEY = "mysecretkey";
+
+    public static String generateToken(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
+    }
+}
+package com.example.demo;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import java.util.Map;
+
+@RestController
+public class AuthController {
+
+    @PostMapping("/authenticate")
+    public Map<String, String> authenticate(@RequestBody Map<String, String> request) {
+        String username = request.get("username");
+        String password = request.get("password");
+        if ("user".equals(username) && "password".equals(password)) {
+            String token = JwtUtil.generateToken(username);
+            return Map.of("token", token);
+        }
+        return Map.of("error", "Invalid credentials");
+    }
+}
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}
+
+
+
