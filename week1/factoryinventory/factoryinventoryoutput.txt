@@ -1,0 +1,4 @@
+Opening a Word Document.
+Opening a PDF Document.   
+Opening an Excel Document.
+PS C:\Users\Isha Shaw\Desktop\week1\data structure>
