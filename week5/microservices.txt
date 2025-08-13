@@ -1,0 +1,138 @@
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+</dependencies>
+package com.example.account;
+
+public class Account {
+    private String accountNumber;
+    private String accountHolder;
+    private double balance;
+
+    public Account() {}
+    public Account(String accountNumber, String accountHolder, double balance) {
+        this.accountNumber = accountNumber;
+        this.accountHolder = accountHolder;
+        this.balance = balance;
+    }
+
+    public String getAccountNumber() { return accountNumber; }
+    public void setAccountNumber(String accountNumber) { this.accountNumber = accountNumber; }
+    public String getAccountHolder() { return accountHolder; }
+    public void setAccountHolder(String accountHolder) { this.accountHolder = accountHolder; }
+    public double getBalance() { return balance; }
+    public void setBalance(double balance) { this.balance = balance; }
+}
+
+package com.example.account;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
+
+@RestController
+public class AccountController {
+    private List<Account> accounts = List.of(
+        new Account("ACC101", "Alice", 5000),
+        new Account("ACC102", "Bob", 10000)
+    );
+
+    @GetMapping("/accounts")
+    public List<Account> getAllAccounts() {
+        return accounts;
+    }
+
+    @GetMapping("/accounts/{number}")
+    public Account getAccount(@PathVariable String number) {
+        return accounts.stream()
+                .filter(a -> a.getAccountNumber().equals(number))
+                .findFirst()
+                .orElse(null);
+    }
+}
+
+package com.example.account;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class AccountApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(AccountApplication.class, args);
+    }
+}
+
+2. Loan Service
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-webflux</artifactId>
+    </dependency>
+</dependencies>
+package com.example.loan;
+
+public class Loan {
+    private String loanId;
+    private String accountNumber;
+    private double amount;
+
+    public Loan() {}
+    public Loan(String loanId, String accountNumber, double amount) {
+        this.loanId = loanId;
+        this.accountNumber = accountNumber;
+        this.amount = amount;
+    }
+
+    public String getLoanId() { return loanId; }
+    public void setLoanId(String loanId) { this.loanId = loanId; }
+    public String getAccountNumber() { return accountNumber; }
+    public void setAccountNumber(String accountNumber) { this.accountNumber = accountNumber; }
+    public double getAmount() { return amount; }
+    public void setAmount(double amount) { this.amount = amount; }
+}
+package com.example.loan;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
+
+@RestController
+public class LoanController {
+    private List<Loan> loans = List.of(
+        new Loan("LN101", "ACC101", 2000),
+        new Loan("LN102", "ACC102", 5000)
+    );
+
+    @GetMapping("/loans")
+    public List<Loan> getAllLoans() {
+        return loans;
+    }
+
+    @GetMapping("/loans/{accountNumber}")
+    public List<Loan> getLoansByAccount(@PathVariable String accountNumber) {
+        return loans.stream()
+                .filter(l -> l.getAccountNumber().equals(accountNumber))
+                .toList();
+    }
+}
+
+package com.example.loan;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class LoanApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(LoanApplication.class, args);
+    }
+}
